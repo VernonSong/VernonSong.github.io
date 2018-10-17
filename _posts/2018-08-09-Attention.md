@@ -41,7 +41,7 @@ $f$通常为LSTM单元或RNN单元。
 
 ## 实现
 ### Tensorflow
-Tensorflow中有很好的soft attention decoder实现**tf.contrib.legacy_seq2seq.attention_decoder**，为方便可视化，在此基础上添加了attention位置的输出。
+Tensorflow中有很好的attention decoder实现**tf.contrib.legacy_seq2seq.attention_decoder**，为方便可视化，在此基础上添加了attention位置的输出。
 
 ```python
 def attention_decoder(decoder_inputs,
