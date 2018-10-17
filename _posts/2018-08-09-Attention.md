@@ -4,7 +4,7 @@ title: attention原理与实现
 subtitle: 
 date: 2018-08-8 16:09:37 +08:00
 author:     "VernonSong"
-header-img: "img/post-bg-attention1.jpg"
+header-img: "img/post-bg-attention.jpg"
 catalog: true
 tags:
     - 深度学习
@@ -38,6 +38,7 @@ $f$通常为LSTM单元或RNN单元。
 
 通过添加注意力机制，能显著提升encoder-decoder模型在处理长输入时的准确率，其它情况下准确率也有一定的提升。同时通过在每个输出时间步去关注不同的输入时间步，达成了输入与输出的软对齐。
 
+![img](/img/in-post/post-attention_1.png)
 
 ## 实现
 ### Tensorflow
