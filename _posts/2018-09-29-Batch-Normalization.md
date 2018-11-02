@@ -16,7 +16,7 @@ tags:
 在神经网络训练过程中会出现内部协变量偏移，这种现象会影响收敛速度和模型泛化能力，为此，研究人员发明了Batch Normalization技术来在网络前向传播过程中动态的进行归一化数据，以此消除内部协变量偏移所带来的影响。
 
 ## 原理
-### 传统神经网络缺陷
+### 神经网络缺陷
 #### 内部协变量偏移
 我们可以把一个神经网络拆解为$f_1$和$f_2$两个子网络：
 
@@ -36,7 +36,7 @@ $x_i$为子网络$f_1$输出，因为$f_1$自身也在不断更新，在经过$f
 当使用sigmoid或tanh激活函数时，若输入值过大或过小，此时会出现软饱和现象，导数接近于0，梯度消失，难以收敛。虽然使用ReLU激活函数或者慎重选择初始化值可以在一定程度上避免梯度消失。但可以发现上述情况发生的原因之一在于某些层的输入数据分布情况不理想。
 
 ### Batch Normalization
-#### 训练阶段正向传播
+#### 算法设计
 在Batch Normalization诞生之前，有研究人员采用在网络中添加若干层，进行白化（Whitening）操作，使神经网络的每一层的输入有相对固定的分布，但却带来了新问题：
 
 - 难以有效计算梯度
@@ -60,7 +60,7 @@ $$
 
 当$y^{(k)}=\sqrt{\mathrm{Var}[x^{(k)}]}$，$\beta^{(k)}=E[x^{(k)}] $时，normalizaiton后的数据完全恢复为原数据。
 
-目前的normalizaiton操作是基于整个训练集，但由于在实际训练中通常采用SGD等方法，将训练集分成若干个mini-batch进行训练，在这种情况下该normalizaiton操作难以实现。因此，再次进行简化，在训练时只计算当前batch的均值和方差，这样的改动同时使normalizaiton操作可以进行梯度计算。由此的到Batch Normalization公式：
+目前的normalizaiton操作是基于整个训练集，但由于在实际训练中通常采用SGD等方法，将训练集分成若干个mini-batch进行训练，在这种情况下该normalizaiton操作难以实现。因此，再次进行简化，在训练时只计算当前batch的均值和方差。由此的到Batch Normalization公式：
 
 $$
 \begin{align*}
@@ -73,7 +73,8 @@ $$
 
 其中$m$为mini batch中样本数，$ \mathcal{B}=\{ x_1,\cdots,x_m\}$，$\mu$与$\sigma_{\mathcal{B}}^2$分别是$x$在mini batch上的均值和方差，算法中将方差加上常数$\epsilon$以保证数值稳定性。为表述方便，在上述公式中省略的特征维度$k$。
 
-#### 训练阶段反向传播
+#### 反向传播
+不同于复杂的白化计算，简化后的Batch Normalization是可微的：
 
 $$
 \begin{align*}
@@ -86,7 +87,28 @@ $$
 \end{align*}
 $$
 
+#### 测试阶段
+由于测试阶段的一个batch可能很小甚至为1，这样计算出来的均值和方差参考意义不大，因此在测试阶段对均值和方差的计算采用新的方法。
 
+第一种方法是**在训练时保留计算得到的均值和方差，计算训练集平均均值，并通过无偏估计来计算测试时方差**：
+
+$$
+\begin{align*}
+& \mu_{test} = E(\mu_{\mathcal{B}})
+\newline & \sigma^2_{test}  = \frac{m}{m-1}E(\sigma_{\mathcal{B}}^2)
+\end{align*}
+$$
+
+其中$m$为训练时batch大小。
+
+第二种方法计算更加简单，直接**采用移动平均的方式计算均值和方差，并将其作为测试时使用的均值和方差**：
+
+$$
+\begin{align*}
+& \mu_{moving} = \mu_{\mathcal{B}}
+\newline & \sigma^2= \frac{m}{m-1}E(\sigma_{\mathcal{B}}^2)
+\end{align*}
+$$
 
 ## 实现
 ### Tensorflow API
