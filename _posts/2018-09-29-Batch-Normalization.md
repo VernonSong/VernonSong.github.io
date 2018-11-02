@@ -79,7 +79,10 @@ $$
 \begin{align*}
 & \frac{\partial \ell}{\partial \hat{x_i}}=\frac{\partial \ell}{\partial y_i} \cdot \gamma
  \newline & \frac{\partial \ell}{\partial \sigma_{\mathcal{B}}^2} =\sum_{i=1}^m \frac{\partial \ell}{\partial \hat{x_i}} \cdot (x_i - \mu_{\mathcal{B}}) \cdot \frac{-1}{2}(\sigma_{\mathcal{B}}^2+\epsilon)^{(-3/2)}
-\newline & \frac{\partial \ell}{\partial\mu_{\mathcal{B}}}=	\left (  \sum_{i=1}\right ) 
+\newline & \frac{\partial \ell}{\partial\mu_{\mathcal{B}}}=	\left (  \sum_{i=1}^m \frac{\partial \ell}{\partial \hat{x_i}} \cdot \frac{-1}{\sqrt{\sigma_{\mathcal{B}}^2+\epsilon}} \right ) + \frac{\partial \ell}{\partial \sigma_{\mathcal{B}}^2} \cdot \frac{\sum_{i=1}^m-2(x_i-\mu_\mathcal{B})}{m}
+\newline & \frac{\partial \ell}{\partial x_i} = \frac{\partial \ell}{\partial \hat{x}} \cdot \frac{1}{\sqrt{\sigma_{\mathcal{B}}^2+\epsilon}}+ \frac{\partial \ell}{\partial \sigma_{\mathcal{B}}^2} \cdot \frac{2(x_i- \mu_{\mathcal{B}})}{m} + \frac{\partial \ell}{\partial\mu_{\mathcal{B}}} \cdot \frac{1}{m}
+\newline &\frac{\partial \ell}{\partial \gamma} = \sum_{i=1}^m \frac{\partial \ell}{\partial y_i} \cdot \hat{x_i}
+\newline &\frac{\partial \ell}{\partial \beta} = \sum_{i=1}^m \frac{\partial \ell}{\partial y_i}
 \end{align*}
 $$
 
