@@ -105,13 +105,74 @@ $$
 
 $$
 \begin{align*}
-& \mu_{moving} = \mu_{\mathcal{B}}
-\newline & \sigma^2= \frac{m}{m-1}E(\sigma_{\mathcal{B}}^2)
+& \mu_{moving} =\mu_{moving}*+ \mu_{\mathcal{B}}
+\newline & \sigma^2_{moving}= \sigma^2_{moving}+ E(\sigma_{\mathcal{B}}^2)
 \end{align*}
 $$
 
 ## 实现
 ### Tensorflow API
+#### tf.nn.batch_normalization
+
+```python
+tf.nn.batch_normalization(
+    x,
+    mean,
+    variance,
+    offset,
+    scale,
+    variance_epsilon,
+    name=None
+)
+```
+Args：
+
+- **x**：任意维数的Tensor输入
+- **mean**：均值$\mu$
+- **variance**：方差$\sigma$
+- **offset**：$\beta$
+- **scale**：$\gamma$
+- **variance_epsilon**：$\epsilon$
+- **name**：层名称
+
+此函数为底层API，只实现了Batch Normalization核心计算，但没有各项参数的计算过程
+
+#### tf.nn.batch_normalization
+
+```python
+@tf_export('layers.BatchNormalization')
+class BatchNormalization(keras_layers.BatchNormalization, base.Layer):
+    __init__(
+        axis=-1,
+        momentum=0.99,
+        epsilon=0.001,
+        center=True,
+        scale=True,
+        beta_initializer=tf.zeros_initializer(),
+        gamma_initializer=tf.ones_initializer(),
+        moving_mean_initializer=tf.zeros_initializer(),
+        moving_variance_initializer=tf.ones_initializer(),
+        beta_regularizer=None,
+        gamma_regularizer=None,
+        beta_constraint=None,
+        gamma_constraint=None,
+        renorm=False,
+        renorm_clipping=None,
+        renorm_momentum=0.99,
+        fused=None,
+        trainable=True,
+        virtual_batch_size=None,
+        adjustment=None,
+        name=None,
+        **kwargs
+    )
+```
+
+
+
+
+
+
 
 
 
