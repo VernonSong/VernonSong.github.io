@@ -135,7 +135,99 @@ Args：
 - **variance_epsilon**：$\epsilon$
 - **name**：层名称
 
-此函数为底层API，只实现了Batch Normalization核心计算，但没有各项参数的计算过程
+此函数为底层API，只实现了Batch Normalization核心计算，但没有各项参数的计算过程，使用时需再进行一次封装
+
+```python
+@scopes.add_arg_scope
+def batch_norm(inputs,
+               decay=0.999,
+               center=True,
+               scale=False,
+               epsilon=0.001,
+               moving_vars='moving_vars',
+               activation=None,
+               is_training=True,
+               trainable=True,
+               restore=True,
+               scope=None,
+               reuse=None):
+  """Adds a Batch Normalization layer.
+  摘自tensorflow/models/research/inception/inception/slim/ops.py    
+  Args:
+    inputs: a tensor of size [batch_size, height, width, channels]
+            or [batch_size, channels].
+    decay: decay for the moving average.
+    center: If True, subtract beta. If False, beta is not created and ignored.
+    scale: If True, multiply by gamma. If False, gamma is
+      not used. When the next layer is linear (also e.g. ReLU), this can be
+      disabled since the scaling can be done by the next layer.
+    epsilon: small float added to variance to avoid dividing by zero.
+    moving_vars: collection to store the moving_mean and moving_variance.
+    activation: activation function.
+    is_training: whether or not the model is in training mode.
+    trainable: whether or not the variables should be trainable or not.
+    restore: whether or not the variables should be marked for restore.
+    scope: Optional scope for variable_scope.
+    reuse: whether or not the layer and its variables should be reused. To be
+      able to reuse the layer scope must be given.
+  Returns:
+    a tensor representing the output of the operation.
+  """
+  inputs_shape = inputs.get_shape()
+  with tf.variable_scope(scope, 'BatchNorm', [inputs], reuse=reuse):
+    axis = list(range(len(inputs_shape) - 1))
+    params_shape = inputs_shape[-1:]
+    # Allocate parameters for the beta and gamma of the normalization.
+    beta, gamma = None, None
+    if center:
+      beta = variables.variable('beta',
+                                params_shape,
+                                initializer=tf.zeros_initializer(),
+                                trainable=trainable,
+                                restore=restore)
+    if scale:
+      gamma = variables.variable('gamma',
+                                 params_shape,
+                                 initializer=tf.ones_initializer(),
+                                 trainable=trainable,
+                                 restore=restore)
+    # Create moving_mean and moving_variance add them to
+    # GraphKeys.MOVING_AVERAGE_VARIABLES collections.
+    moving_collections = [moving_vars, tf.GraphKeys.MOVING_AVERAGE_VARIABLES]
+    moving_mean = variables.variable('moving_mean',
+                                     params_shape,
+                                     initializer=tf.zeros_initializer(),
+                                     trainable=False,
+                                     restore=restore,
+                                     collections=moving_collections)
+    moving_variance = variables.variable('moving_variance',
+                                         params_shape,
+                                         initializer=tf.ones_initializer(),
+                                         trainable=False,
+                                         restore=restore,
+                                         collections=moving_collections)
+    if is_training:
+      # Calculate the moments based on the individual batch.
+      mean, variance = tf.nn.moments(inputs, axis)
+
+      update_moving_mean = moving_averages.assign_moving_average(
+          moving_mean, mean, decay)
+      tf.add_to_collection(UPDATE_OPS_COLLECTION, update_moving_mean)
+      update_moving_variance = moving_averages.assign_moving_average(
+          moving_variance, variance, decay)
+      tf.add_to_collection(UPDATE_OPS_COLLECTION, update_moving_variance)
+    else:
+      # Just use the moving_mean and moving_variance.
+      mean = moving_mean
+      variance = moving_variance
+    # Normalize the activations.
+    outputs = tf.nn.batch_normalization(
+        inputs, mean, variance, beta, gamma, epsilon)
+    outputs.set_shape(inputs.get_shape())
+    if activation:
+      outputs = activation(outputs)
+    return outputs
+```
 
 #### tf.nn.batch_normalization
 
@@ -167,6 +259,8 @@ class BatchNormalization(keras_layers.BatchNormalization, base.Layer):
         **kwargs
     )
 ```
+
+
 
 
 
