@@ -24,7 +24,7 @@ CTC在预测时假设句子中每一个字符出现的概率为条件独立事�
 
 ![](/img/in-post/post-ctc_attention/post-ctc_attention1.png)
 
-CTC与Attention decoder共享encoder部分，由于CTC的前向后向算法（forward-backward algorithm）能够强制进行输入与输出的单调对齐。因此在输入数据噪声过多时也能获得稳定的对齐效果。同时，由于CTC的前向后向算法的对齐过程不是数据驱动的，而Attention需要学习如何对齐，因此CTC能帮助网络快速学习到如何粗略对齐，从而加速收敛。
+CTC与Attention decoder共享encoder部分，由于CTC的前向后向算法（forward-backward algorithm）能够强制进行输入与输出的单调对齐。因此在输入数据噪声过多时也能获得稳定的对齐效果。同时，由于CTC的前向后向算法的对齐过程不是数据驱动的，而Attention需要学习如何对齐。因此，在训练前期，即使Attention decoder还未学习好如何正确对齐，CTC也能帮助网络encoder部分以单调对齐的方式进行学习，以此加速整个网络收敛。
 
 由于新的网络有两个任务，因此loss变为：
 
