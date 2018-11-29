@@ -174,9 +174,7 @@ def label_smoothing_regularization(self, chars_labels, weight=0.1):
     return one_hot_labels * pos_weight + neg_weight
 ```
 
-## 链接
-
-### 论文
+## 参考
 >[Rethinking the Inception Architecture for Computer Vision](https://arxiv.org/pdf/1512.00567.pdf)
 
 

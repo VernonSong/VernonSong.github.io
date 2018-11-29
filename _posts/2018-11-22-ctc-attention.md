@@ -91,4 +91,4 @@ def ctc_attention_loss(attention_chars_logits, ctc_chars_logits, attention_label
 ```
 
 ## 参考
-[Joint CTC-Attention based End-to-End Speech Recognition using Multi-task Learning](https://arxiv.org/pdf/1609.06773.pdf)
+> [Joint CTC-Attention based End-to-End Speech Recognition using Multi-task Learning](https://arxiv.org/pdf/1609.06773.pdf)

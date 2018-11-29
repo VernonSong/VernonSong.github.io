@@ -102,7 +102,8 @@ vector() : start(0), finish(0), end_of_storage(0) {}
 vector<int> vec(10,1); // 将vec初始化为10个1
 ```
 vector提供下面的构造函数以支持上述初始化操作：
-![](https://github.com/VernonSong/Storage/blob/master/image/Selection_011.png?raw=true)
+
+![](/img/in-post/post-STL/post-stl8.png)
 
 ```cpp
 // 构造函数，允许指定vector的元素个数和初值
@@ -324,7 +325,7 @@ iterator erase(iterator first, iterator last)
 }
 ```
 这里放上两张《STL源码剖析》中的图，便于理解这一过程：
-![](https://github.com/VernonSong/Storage/blob/master/image/Selection_012.png?raw=true)
+![](/img/in-post/post-STL/post-stl9.png)
 <br>有上述erase函数，可以衍生出一个函数，用来清除迭代器中所有的元素
 
 ```cpp
@@ -432,8 +433,8 @@ void vector<T, Alloc>::insert(iterator position, size_type n, const T& x)
 上述操作可以使插入操作达到最高的效率。配合以下图解更容易理解：
 <br>
 <br>插入点之后的现有元素个数大于新增元素个数的情况
-![](https://github.com/VernonSong/Storage/blob/master/image/Selection_013.png?raw=true)
+![](/img/in-post/post-STL/post-stl10.png)
 <br>插入点之后的现有元素个数小于新增元素个数的情况
-![](https://github.com/VernonSong/Storage/blob/master/image/Selection_014.png?raw=true)
+![](/img/in-post/post-STL/post-stl11.png)
 <br>剩下的内存不够分配，重新配置的情况
-![](https://github.com/VernonSong/Storage/blob/master/image/Selection_015.png?raw=true)
+![](/img/in-post/post-STL/post-stl12.png)

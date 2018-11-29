@@ -16,14 +16,14 @@ tags:
 
 ### 叉乘法简介
 对于凸多边形，很容易计算，如下图，以多边形的某一点为顶点，将其划分成几个三角形，计算这些三角形的面积，然后加起来即可。已知三角形顶点坐标，其三角形积可以利用向量的叉乘来计算。
-![](https://github.com/VernonSong/Storage/blob/master/image/201410240014304222.png?raw=true)
+![](/img/in-post/post-STL/post-cross-area1.png)
 对于凹多边形，如果还是按照上述方法划分成三角形，如下图，多边形的面积 = S_ABC + S_ACD + S_ADE, 这个面积明显超过多边形的面积。
-![](https://github.com/VernonSong/Storage/blob/master/image/201410240014308216.png?raw=true)
+![](/img/in-post/post-STL/post-cross-area2.png)
 我们根据二维向量叉乘求三角形ABC面积时，利用的是
-![](https://github.com/VernonSong/Storage/blob/master/image/201410240014311097.png?raw=true)
+![](/img/in-post/post-STL/post-cross-area3.png)
 因为向量叉乘是有方向的，所以得到的面积有正有负，不论是凸多边形还是凹多边形都能得出正确结果。
 <br>如果我们不以多边形的某一点为顶点来划分三角形而是以任意一点，如下图，这个方法也是成立的：S = S_OAB + S_OBC + S_OCD + S_ODE + S_OEA。计算的时候，当我们取O点为原点时，可以简化计算。
-![](https://github.com/VernonSong/Storage/blob/master/image/201410240014319915.png?raw=true)
+![](/img/in-post/post-STL/post-cross-area4.png)
 当O点为原点时，根据向量的叉积计算公式，各个三角形的面积计算如下：
  
 S_OAB = 0.5*(A_x\*B_y - A_y*B_x)   【(A_x，A_y)为A点的坐标】

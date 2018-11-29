@@ -280,7 +280,7 @@ struct iterator_traits<const T*>
 - Random Access Iterator：前四种迭代器都只供应一部分指针的算数能力(前三种支持operator++，第四种支持operator–)，第五种则涵盖所有指针的算数能力，包括p+n,p-n,p[n],p1-p2,p1<p2等
 
 在STL中，这五类迭代器的继承关系如下：
-![](https://github.com/VernonSong/Storage/blob/master/image/387_945_9c1.jpg?raw=true)
+![](/img/in-post/post-STL/post-stl7.jpg)
 <br>下面我们来看看它的源代码实现：
 
 ```cpp
