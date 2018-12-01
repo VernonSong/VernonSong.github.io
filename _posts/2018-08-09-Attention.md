@@ -1,6 +1,6 @@
 ---
 layout: post
-title: attention原理与实现
+title: Attention原理与实现
 subtitle: 
 date: 2018-08-8 16:09:37 +08:00
 author:     "VernonSong"
