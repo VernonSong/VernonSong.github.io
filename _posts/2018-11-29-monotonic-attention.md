@@ -39,7 +39,7 @@ $$
 在计算高斯分布时，额外引入$\lambda$缩放比例
 
 $$
-\lambda_t = \mathrm{exp} (V_{\lambda} ^T tanh(W_ph_t^d))
+\lambda_t = \mathrm{exp} (V_{\lambda} ^T tanh(W_{\lambda}h_t^d))
 $$
 
 $$
