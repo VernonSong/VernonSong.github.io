@@ -53,11 +53,63 @@ item {
 - **get_max_label_map_index**：获取label map的id最大值
 - **convert_label_map_to_categories**：根据label map或类别数生成形如[{'id':1,'name':'dog'},{'id':2,'name':'cat'}]的列表
 - **load_labelmap**：读取label map文件并进行检查
-- **get_label_map_dict**：
-- **create_category_index_from_labelmap**：读取label map文件
+- **get_label_map_dict**：读取label map文件，检查有无数值错误，生成形如{'cat': 3, 'dog': 1, 'background': 0, 'class_2': 2}的字典，可通过参数fill_in_gaps_and_background来设定是否填补背景类和编号空缺的类
+- **create_categories_from_labelmap**：读取label map文件并生成形如[{'id':1,'name':'dog'},{'id':2,'name':'cat'}]的列表
+- **create_category_index_from_labelmap**：读取label map文件并生成形如['dog','cat']的列表
 - **create_class_agnostic_category_index**：创建一个未知类别
 
 ## learning_schedules
+学习率自调整相关的工具函数
+
+### exponential_decay_with_burnin
+先常数学习率，一定步数后指数衰减
+```python
+def exponential_decay_with_burnin(global_step,
+                                  learning_rate_base,
+                                  learning_rate_decay_steps,
+                                  learning_rate_decay_factor,
+                                  burnin_learning_rate=0.0,
+                                  burnin_steps=0,
+                                  min_learning_rate=0.0,
+                                  staircase=True):
+  """Exponential decay schedule with burn-in period.
+
+  In this schedule, learning rate is fixed at burnin_learning_rate
+  for a fixed period, before transitioning to a regular exponential
+  decay schedule.
+
+  Args:
+    global_step: int tensor representing global step.
+    learning_rate_base: base learning rate.
+    learning_rate_decay_steps: steps to take between decaying the learning rate.
+      Note that this includes the number of burn-in steps.
+    learning_rate_decay_factor: multiplicative factor by which to decay
+      learning rate.
+    burnin_learning_rate: initial learning rate during burn-in period.  If
+      0.0 (which is the default), then the burn-in learning rate is simply
+      set to learning_rate_base.
+    burnin_steps: number of steps to use burnin learning rate.
+    min_learning_rate: the minimum learning rate.
+    staircase: whether use staircase decay.
+
+  Returns:
+    a (scalar) float tensor representing learning rate
+  """
+  if burnin_learning_rate == 0:
+    burnin_learning_rate = learning_rate_base
+  # 指数衰减学习率部分
+  post_burnin_learning_rate = tf.train.exponential_decay(
+      learning_rate_base,
+      global_step - burnin_steps,
+      learning_rate_decay_steps,
+      learning_rate_decay_factor,
+      staircase=staircase)
+  # 添加常数学习率，并保证学习率大于min_learning_rate
+  return tf.maximum(tf.where(
+      tf.less(tf.cast(global_step, tf.int32), tf.constant(burnin_steps)),
+      tf.constant(burnin_learning_rate),
+      post_burnin_learning_rate), min_learning_rate, name='learning_rate')
+```
 
 
 
