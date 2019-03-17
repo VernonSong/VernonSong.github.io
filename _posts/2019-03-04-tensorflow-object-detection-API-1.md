@@ -6,6 +6,7 @@ date: 2019-03-01 20:09:37 +08:00
 author:     "VernonSong"
 header-img: "img/post-bg-tensorflow-api1.jpg"
 catalog: true
+mathjax: true
 tags:
     - tensorflow
 ---
