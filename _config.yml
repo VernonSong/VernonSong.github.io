@@ -1,4 +1,4 @@
-# Site settings
+﻿# Site settings
 title: VernonSong Blog
 SEOTitle: VernonSong Blog
 header-img: img/home-bg.jpg
@@ -71,7 +71,7 @@ netease_comment: false
 # ba_track_id: [your track id]
 
 # Google Analytics
-ba_track_id: 77b08b8bc74c2b3528294a902a90e1af
+ba_track_id: UA-141629673-1
 
 
 
