@@ -8,6 +8,7 @@ header-img: "img/post-bg-tensorflow-install.jpg"
 catalog: true
 tags:
     - tensorflow
+typora-root-url: ../../blog
 ---
 
 tensorflow在安装过程中，会出现由于依赖项的缺失而造成的载入失败问题

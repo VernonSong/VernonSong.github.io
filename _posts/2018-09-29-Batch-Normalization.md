@@ -110,7 +110,12 @@ $$
 \end{align*}
 $$
 
+
+
+需要注意的是，如果**decay过大，而迭代步数过少，即使训练集上效果良好，测试时也会因为均值和方差没有获得足够的更新而难以取得好的效果**。
+
 ## 实现
+
 ### Tensorflow API
 #### tf.nn.batch_normalization
 [tf.nn.batch_normalization](https://www.tensorflow.org/api_docs/python/tf/nn/batch_normalization)

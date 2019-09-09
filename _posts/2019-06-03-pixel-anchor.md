@@ -61,7 +61,7 @@ $$
 
 ### anchor bases model
 #### 结构
-pixel-anchor的anchor bases model基于SSD，从特征提取网络中提取1/4，1/16两个feature map，然后通过全卷积操作获得1/32，1/64，1/64，1/64共4个feature map，其中最后两个feature map保持尺寸不变，使用atrous convolution（dilation rate=2）来增加reception field。
+pixel-anchor的anchor based model基于SSD，从特征提取网络中提取1/4，1/16两个feature map，然后通过全卷积操作获得1/32，1/64，1/64，1/64共4个feature map，其中最后两个feature map保持尺寸不变，使用atrous convolution（dilation rate=2）来增加reception field。
 
 ![](\img\in-post\post-text-detection\pixel-anchor-3.png)
 
